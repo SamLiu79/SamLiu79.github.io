@@ -2,13 +2,151 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://SamLiu79.github.io</id>
     <title>zPython</title>
-    <updated>2019-11-07T04:07:51.035Z</updated>
+    <updated>2019-11-07T14:13:59.605Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://SamLiu79.github.io"/>
     <link rel="self" href="https://SamLiu79.github.io/atom.xml"/>
     <logo>https://SamLiu79.github.io/images/avatar.png</logo>
     <icon>https://SamLiu79.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, zPython</rights>
+    <entry>
+        <title type="html"><![CDATA[Create k8s POC cluster]]></title>
+        <id>https://SamLiu79.github.io/post/create-k8s-poc-cluster</id>
+        <link href="https://SamLiu79.github.io/post/create-k8s-poc-cluster">
+        </link>
+        <updated>2019-11-07T14:11:25.000Z</updated>
+        <summary type="html"><![CDATA[<p>We use Kind(Kubernetes in docker) to help create k8s cluster.<br>
+save below file as AspiraSCM-POC.yaml , please update IP address 172.28.24.67  with your host's IP.</p>
+<pre><code>kind: Cluster
+apiVersion: kind.sigs.k8s.io/v1alpha3
+networking:
+  apiServerPort: 1900
+  apiServerAddress: 172.28.24.67
+
+kubeadmConfigPatchesJson6902:
+- group: kubeadm.k8s.io
+  version: v1beta2
+  kind: ClusterConfiguration
+  patch: |
+    - op: add
+      path: /apiServer/certSANs/-
+      value: 172.28.24.67
+# 1 control plane node and 3 workers
+nodes:
+# the control plane node config
+- role: control-plane
+# the three workers
+- role: worker
+- role: worker
+- role: worker
+</code></pre>
+<p>following (https://kind.sigs.k8s.io/docs/user/quick-start/) to download kind.<br>
+create a k8s cluster</p>
+<pre><code># kind create cluster --name AspiraSCM-POC --config ./AspiraSCM-POC.yaml --image kindest/node:v1.16.2
+Creating cluster &quot;AspiraSCM-POC&quot; ...
+ ✓ Ensuring node image (kindest/node:v1.16.2) 🖼
+ ✓ Preparing nodes 📦📦📦📦 
+ ✓ Creating kubeadm config 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+ ✓ Joining worker nodes 🚜 
+Cluster creation complete. You can now use the cluster with:
+
+#export KUBECONFIG=&quot;$(kind get kubeconfig-path --name=&quot;AspiraSCM-POC&quot;)&quot;
+#kubectl cluster-info
+Kubernetes master is running at https://172.28.24.67:1900
+KubeDNS is running at https://172.28.24.67:1900/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+</code></pre>
+<p>download kubectl and get kind-config-AspiraSCM-POC<br>
+export KUBECONFIG=./kind-config-AspiraSCM-POC</p>
+<p>now we got a k8s cluster with 3 worker nodes.</p>
+<pre><code># kubectl cluster-info                                                                           23:27:39
+Kubernetes master is running at https://172.28.24.67:1900
+KubeDNS is running at https://172.28.24.67:1900/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+# kubectl get no                                                                                 23:27:47
+NAME                          STATUS   ROLES    AGE   VERSION
+aspirascm-poc-control-plane   Ready    master   38m   v1.16.2
+aspirascm-poc-worker          Ready    &lt;none&gt;   38m   v1.16.2
+aspirascm-poc-worker2         Ready    &lt;none&gt;   38m   v1.16.2
+aspirascm-poc-worker3         Ready    &lt;none&gt;   38m   v1.16.2
+# kubectl get ns                                                                                 23:27:51
+NAME              STATUS   AGE
+default           Active   38m
+kube-node-lease   Active   38m
+kube-public       Active   38m
+kube-system       Active   38m
+</code></pre>
+]]></summary>
+        <content type="html"><![CDATA[<p>We use Kind(Kubernetes in docker) to help create k8s cluster.<br>
+save below file as AspiraSCM-POC.yaml , please update IP address 172.28.24.67  with your host's IP.</p>
+<pre><code>kind: Cluster
+apiVersion: kind.sigs.k8s.io/v1alpha3
+networking:
+  apiServerPort: 1900
+  apiServerAddress: 172.28.24.67
+
+kubeadmConfigPatchesJson6902:
+- group: kubeadm.k8s.io
+  version: v1beta2
+  kind: ClusterConfiguration
+  patch: |
+    - op: add
+      path: /apiServer/certSANs/-
+      value: 172.28.24.67
+# 1 control plane node and 3 workers
+nodes:
+# the control plane node config
+- role: control-plane
+# the three workers
+- role: worker
+- role: worker
+- role: worker
+</code></pre>
+<p>following (https://kind.sigs.k8s.io/docs/user/quick-start/) to download kind.<br>
+create a k8s cluster</p>
+<pre><code># kind create cluster --name AspiraSCM-POC --config ./AspiraSCM-POC.yaml --image kindest/node:v1.16.2
+Creating cluster &quot;AspiraSCM-POC&quot; ...
+ ✓ Ensuring node image (kindest/node:v1.16.2) 🖼
+ ✓ Preparing nodes 📦📦📦📦 
+ ✓ Creating kubeadm config 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+ ✓ Joining worker nodes 🚜 
+Cluster creation complete. You can now use the cluster with:
+
+#export KUBECONFIG=&quot;$(kind get kubeconfig-path --name=&quot;AspiraSCM-POC&quot;)&quot;
+#kubectl cluster-info
+Kubernetes master is running at https://172.28.24.67:1900
+KubeDNS is running at https://172.28.24.67:1900/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+</code></pre>
+<p>download kubectl and get kind-config-AspiraSCM-POC<br>
+export KUBECONFIG=./kind-config-AspiraSCM-POC</p>
+<p>now we got a k8s cluster with 3 worker nodes.</p>
+<pre><code># kubectl cluster-info                                                                           23:27:39
+Kubernetes master is running at https://172.28.24.67:1900
+KubeDNS is running at https://172.28.24.67:1900/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+# kubectl get no                                                                                 23:27:47
+NAME                          STATUS   ROLES    AGE   VERSION
+aspirascm-poc-control-plane   Ready    master   38m   v1.16.2
+aspirascm-poc-worker          Ready    &lt;none&gt;   38m   v1.16.2
+aspirascm-poc-worker2         Ready    &lt;none&gt;   38m   v1.16.2
+aspirascm-poc-worker3         Ready    &lt;none&gt;   38m   v1.16.2
+# kubectl get ns                                                                                 23:27:51
+NAME              STATUS   AGE
+default           Active   38m
+kube-node-lease   Active   38m
+kube-public       Active   38m
+kube-system       Active   38m
+</code></pre>
+<!-- more -->
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Test]]></title>
         <id>https://SamLiu79.github.io/post/test</id>

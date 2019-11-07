@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="all,follow">
 <meta name="googlebot" content="index,follow,snippet,archive">
-<title>zPython</title>
+<title>Create k8s POC cluster | zPython</title>
 <link rel="shortcut icon" href="https://SamLiu79.github.io/favicon.ico?v=1573136020057">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <link rel="stylesheet" href="https://SamLiu79.github.io/styles/main.css" type='text/css' media='all'>
@@ -18,7 +18,7 @@
 
 
 </head>
-<body class="post-template-default single single-post single-format-standard ct-body singular singular-post not-front standard">
+<body class="home blog ct-body standard">
 <div id="overflow-container" class="overflow-container">
   <a class="skip-content" href="#main">Skip to content</a>
   <header id="site-header" class="site-header" role="banner">
@@ -108,13 +108,154 @@
 
 </header>
 
+
   <div id="main" class="main" role="main">
-    <div class="main-content">
-      <div class="tags-container">
+    <div id="loop-container" class="loop-container">
+      <div class="post type-post status-publish format-standard has-post-thumbnail hentry category-design tag-design tag-standard-2 tag-tagalicious tag-travel entry full-without-featured odd excerpt-1">
         
-          <a class="tag" href="https://SamLiu79.github.io/tag/325esTlZv">Kubernetes</a>
-        
+
+        <div class="entry-meta">
+          <span class="date">· 2019-11-07 ·</span> <span> / </span>
+          <span class="author">
+            <a href="https://SamLiu79.github.io" title="" rel="author"> </a>
+          </span>
+          
+            <span class="category">
+                    <span> / </span>
+                    <a href="https://SamLiu79.github.io/tag/325esTlZv">Kubernetes</a>
+                </span>
+          
+        </div>
+        <div class='entry-header'>
+          <h1 class='entry-title'>Create k8s POC cluster</h1>
+        </div>
+        <div class="entry-container">
+          <div class="entry-content">
+            <article>
+              <p>We use Kind(Kubernetes in docker) to help create k8s cluster.<br>
+save below file as AspiraSCM-POC.yaml , please update IP address 172.28.24.67  with your host's IP.</p>
+<pre><code>kind: Cluster
+apiVersion: kind.sigs.k8s.io/v1alpha3
+networking:
+  apiServerPort: 1900
+  apiServerAddress: 172.28.24.67
+
+kubeadmConfigPatchesJson6902:
+- group: kubeadm.k8s.io
+  version: v1beta2
+  kind: ClusterConfiguration
+  patch: |
+    - op: add
+      path: /apiServer/certSANs/-
+      value: 172.28.24.67
+# 1 control plane node and 3 workers
+nodes:
+# the control plane node config
+- role: control-plane
+# the three workers
+- role: worker
+- role: worker
+- role: worker
+</code></pre>
+<p>following (https://kind.sigs.k8s.io/docs/user/quick-start/) to download kind.<br>
+create a k8s cluster</p>
+<pre><code># kind create cluster --name AspiraSCM-POC --config ./AspiraSCM-POC.yaml --image kindest/node:v1.16.2
+Creating cluster &quot;AspiraSCM-POC&quot; ...
+ ✓ Ensuring node image (kindest/node:v1.16.2) 🖼
+ ✓ Preparing nodes 📦📦📦📦 
+ ✓ Creating kubeadm config 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+ ✓ Joining worker nodes 🚜 
+Cluster creation complete. You can now use the cluster with:
+
+#export KUBECONFIG=&quot;$(kind get kubeconfig-path --name=&quot;AspiraSCM-POC&quot;)&quot;
+#kubectl cluster-info
+Kubernetes master is running at https://172.28.24.67:1900
+KubeDNS is running at https://172.28.24.67:1900/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+</code></pre>
+<p>download kubectl and get kind-config-AspiraSCM-POC<br>
+export KUBECONFIG=./kind-config-AspiraSCM-POC</p>
+<p>now we got a k8s cluster with 3 worker nodes.</p>
+<pre><code># kubectl cluster-info                                                                           23:27:39
+Kubernetes master is running at https://172.28.24.67:1900
+KubeDNS is running at https://172.28.24.67:1900/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+# kubectl get no                                                                                 23:27:47
+NAME                          STATUS   ROLES    AGE   VERSION
+aspirascm-poc-control-plane   Ready    master   38m   v1.16.2
+aspirascm-poc-worker          Ready    &lt;none&gt;   38m   v1.16.2
+aspirascm-poc-worker2         Ready    &lt;none&gt;   38m   v1.16.2
+aspirascm-poc-worker3         Ready    &lt;none&gt;   38m   v1.16.2
+# kubectl get ns                                                                                 23:27:51
+NAME              STATUS   AGE
+default           Active   38m
+kube-node-lease   Active   38m
+kube-public       Active   38m
+kube-system       Active   38m
+</code></pre>
+<!-- more -->
+
+            </article>
+          </div>
+          <div class='entry-meta-bottom'>
+            <div class="entry-categories">
+              <p>
+                <span>Categories</span>
+                
+                  
+                    
+                  <a href="https://SamLiu79.github.io/tag/325esTlZv" title="View all posts in Kubernetes">Kubernetes</a>
+                    
+                    
+              </p>
+            </div>
+            <div class="entry-tags">
+              <p><span>Tags</span>
+              </p>
+            </div>
+          </div>
+          <div class="author-meta">
+            <div class="author">
+              <img alt='' src="https://SamLiu79.github.io/images/avatar.png?v=1573136020057" class='avatar avatar-72 photo' height='72' width='72'>
+              <span>WRITTEN BY: &nbsp;&nbsp;&nbsp;<a href='https://SamLiu79.github.io'></a> </span>
+            </div>
+            <div class="bio">
+              <p></p>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </div>
+          </div>
+        </div>
+          
+            <nav class="navigation pagination" role="navigation">
+              <h2 class="screen-reader-text">Posts navigation</h2>
+              <div class="nav-links">
+                <a class="next page-numbers" href="https://SamLiu79.github.io/post/test">下一篇->Test</a>
+              </div>
+            </nav>
+          
       </div>
+      <section id="comments" class="comments">
+        
+      </section>
     </div>
   </div>
   <footer id="site-footer" class="site-footer" role="contentinfo">
@@ -161,5 +302,4 @@
 </div>
 </body>
 </html>
-
 
