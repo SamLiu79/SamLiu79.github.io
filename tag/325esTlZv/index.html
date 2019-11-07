@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes | zPython</title>
 <meta name="description" content="" />
-<link rel="shortcut icon" href="https://SamLiu79.github.io/favicon.ico?v=1573136130557">
+<link rel="shortcut icon" href="https://SamLiu79.github.io/favicon.ico?v=1573136246179">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://SamLiu79.github.io/styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://SamLiu79.github.io">
-  <img class="avatar" src="https://SamLiu79.github.io/images/avatar.png?v=1573136130557" alt="">
+  <img class="avatar" src="https://SamLiu79.github.io/images/avatar.png?v=1573136246179" alt="">
   </a>
   <h1 class="site-title">
     zPython
@@ -97,7 +97,7 @@
       
       <div class="post-abstract">
         <p>We use Kind(Kubernetes in docker) to help create k8s cluster.<br>
-save below file as AspiraSCM-POC.yaml , please update IP address 172.28.24.67  with your host's IP.</p>
+save below file as POC.yaml , please update IP address 172.28.24.67  with your host's IP.</p>
 <pre><code>kind: Cluster
 apiVersion: kind.sigs.k8s.io/v1alpha3
 networking:
@@ -123,8 +123,8 @@ nodes:
 </code></pre>
 <p>following (https://kind.sigs.k8s.io/docs/user/quick-start/) to download kind.<br>
 create a k8s cluster</p>
-<pre><code># kind create cluster --name AspiraSCM-POC --config ./AspiraSCM-POC.yaml --image kindest/node:v1.16.2
-Creating cluster &quot;AspiraSCM-POC&quot; ...
+<pre><code># kind create cluster --name POC --config ./POC.yaml --image kindest/node:v1.16.2
+Creating cluster &quot;POC&quot; ...
  ✓ Ensuring node image (kindest/node:v1.16.2) 🖼
  ✓ Preparing nodes 📦📦📦📦 
  ✓ Creating kubeadm config 📜 
@@ -134,13 +134,13 @@ Creating cluster &quot;AspiraSCM-POC&quot; ...
  ✓ Joining worker nodes 🚜 
 Cluster creation complete. You can now use the cluster with:
 
-#export KUBECONFIG=&quot;$(kind get kubeconfig-path --name=&quot;AspiraSCM-POC&quot;)&quot;
+#export KUBECONFIG=&quot;$(kind get kubeconfig-path --name=&quot;POC&quot;)&quot;
 #kubectl cluster-info
 Kubernetes master is running at https://172.28.24.67:1900
 KubeDNS is running at https://172.28.24.67:1900/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 </code></pre>
-<p>download kubectl and get kind-config-AspiraSCM-POC<br>
-export KUBECONFIG=./kind-config-AspiraSCM-POC</p>
+<p>download kubectl and get kind-config-POC<br>
+export KUBECONFIG=./kind-config-POC</p>
 <p>now we got a k8s cluster with 3 worker nodes.</p>
 <pre><code># kubectl cluster-info                                                                           23:27:39
 Kubernetes master is running at https://172.28.24.67:1900
@@ -149,10 +149,10 @@ KubeDNS is running at https://172.28.24.67:1900/api/v1/namespaces/kube-system/se
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 # kubectl get no                                                                                 23:27:47
 NAME                          STATUS   ROLES    AGE   VERSION
-aspirascm-poc-control-plane   Ready    master   38m   v1.16.2
-aspirascm-poc-worker          Ready    &lt;none&gt;   38m   v1.16.2
-aspirascm-poc-worker2         Ready    &lt;none&gt;   38m   v1.16.2
-aspirascm-poc-worker3         Ready    &lt;none&gt;   38m   v1.16.2
+poc-control-plane   Ready    master   38m   v1.16.2
+poc-worker          Ready    &lt;none&gt;   38m   v1.16.2
+poc-worker2         Ready    &lt;none&gt;   38m   v1.16.2
+poc-worker3         Ready    &lt;none&gt;   38m   v1.16.2
 # kubectl get ns                                                                                 23:27:51
 NAME              STATUS   AGE
 default           Active   38m
